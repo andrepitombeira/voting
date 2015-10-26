@@ -11,15 +11,15 @@ import App from './components/App';
 import {VotingContainer} from './components/Voting';
 import {ResultsContainer} from './components/Results';
 
-const createStoreWithMiddleware = applyMiddleware(
-  remoteActionMiddleware(socket)
-)(createStore);
-const store = createStoreWithMiddleware(reducer);
-
 const socket = io(`${location.protocol}//${location.hostname}:8090`);
 socket.on('state', state =>
   store.dispatch(setState(state))
 );
+
+const createStoreWithMiddleware = applyMiddleware(
+  remoteActionMiddleware(socket)
+)(createStore);
+const store = createStoreWithMiddleware(reducer);
 
 const routes = <Route component={App}>
   <Route path="/results" component={ResultsContainer} />
@@ -28,7 +28,7 @@ const routes = <Route component={App}>
 
 ReactDom.render(
   <Provider store={store}>
-    <Router>{routes}</Router>,
+    <Router>{routes}</Router>
   </Provider>,
 	document.getElementById('app')
 );
